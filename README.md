@@ -1,4 +1,5 @@
 # Scripts
 
 # docker-script.sh
-bash docker-script.sh --> To install the docker latest version on linux
+Command : bash docker-script.sh
+Use: To install Docker Latest version on Debian
