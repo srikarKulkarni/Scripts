@@ -1,5 +1,4 @@
 # Scripts
 
-# Docker Install:
-bash docker-script.sh
-  This will install the docker latest version on linux
+# docker-script.sh
+bash docker-script.sh --> To install the docker latest version on linux
