@@ -1,0 +1,4 @@
+---
+# tasks file for roles/docker-install
+ - name: Install Docker 
+   script: ../templates/docker-install.sh  
