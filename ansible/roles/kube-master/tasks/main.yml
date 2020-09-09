@@ -1,0 +1,29 @@
+---
+# tasks file for roles/kube-master
+
+  - name: Install Kubeadm,Kubectl,Kubelet
+    apt:
+      update_cache: yes
+    apt:
+      pkg:
+        - kubeadm
+        - kubelet
+        - kubectl
+
+  - name: Initialise kubernetes cluster
+    shell: kubeadm init --pod-network-cidr=192.168.0.0/16
+
+  - name: create .kube folder in home path
+    shell: mkdir -p "{{ home_path }}/.kube"
+
+  - name: copy config files
+    copy:
+       src: /etc/kubernetes/admin.conf
+       dest: "{{ home_path }}/.kube/config"
+       owner: "{{ user }}"
+       group: "{{ user }}"
+       mode: 0644
+  
+  - name: Install CNI
+    shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
