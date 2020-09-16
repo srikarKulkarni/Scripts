@@ -1,0 +1,15 @@
+---
+
+  - hosts: common
+    become: yes
+    become_method: sudo
+    roles:
+            - role: prepare-vm
+              tags:
+                      -  prepare-vm
+            - role: docker-install
+              tags: 
+                      - docker-install
+            - role: kube-master
+              tags:
+                      - kube-master
