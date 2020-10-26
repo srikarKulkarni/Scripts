@@ -1,0 +1,33 @@
+FROM openjdk:8-jdk
+
+LABEL maintainer="SrikarKulkarni" contactId="iamsri15@gmail.com"
+
+ENV TOMCAT_MAJOR=8 TOMCAT_VERSION=8.5.54 CATALINA_HOME=/usr/local/tomcat
+
+ARG User=tomcat
+ARG war_path=target/example-1.0.war
+	
+# downloading tomcat to /tmp 
+ADD http://www-us.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR}/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz /tmp/
+
+# create tomcat dir , tomcat user , owner permissions 
+RUN mkdir ${CATALINA_HOME}; \
+    useradd -m -d /home/${User} ${User}; \
+    cd /tmp && tar xvfz apache-tomcat-${TOMCAT_VERSION}.tar.gz; \
+    cp -Rv /tmp/apache-tomcat-${TOMCAT_VERSION}/* ${CATALINA_HOME}/; \
+	rm -rf /tmp/apache-tomcat-${TOMCAT_VERSION}; \
+	rm /tmp/apache-tomcat-${TOMCAT_VERSION}.tar.gz; \
+	chmod +x ${CATALINA_HOME}/bin/*.sh; \
+    chown -R tomcat: ${CATALINA_HOME}
+
+# copying required war file
+
+COPY ${war_path} ${CATALINA_HOME}/webapps/sample.war
+
+EXPOSE 8080
+
+USER ${User}
+ 
+WORKDIR /home/tomcat
+
+ENTRYPOINT ${CATALINA_HOME}/bin/catalina.sh run
